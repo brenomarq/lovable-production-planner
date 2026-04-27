@@ -9,8 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ItensRouteImport } from './routes/itens'
+import { Route as EstoqueRouteImport } from './routes/estoque'
+import { Route as BomRouteImport } from './routes/bom'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ItensRoute = ItensRouteImport.update({
+  id: '/itens',
+  path: '/itens',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstoqueRoute = EstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BomRoute = BomRouteImport.update({
+  id: '/bom',
+  path: '/bom',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +37,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bom': typeof BomRoute
+  '/estoque': typeof EstoqueRoute
+  '/itens': typeof ItensRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bom': typeof BomRoute
+  '/estoque': typeof EstoqueRoute
+  '/itens': typeof ItensRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bom': typeof BomRoute
+  '/estoque': typeof EstoqueRoute
+  '/itens': typeof ItensRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/bom' | '/estoque' | '/itens'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/bom' | '/estoque' | '/itens'
+  id: '__root__' | '/' | '/bom' | '/estoque' | '/itens'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BomRoute: typeof BomRoute
+  EstoqueRoute: typeof EstoqueRoute
+  ItensRoute: typeof ItensRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/itens': {
+      id: '/itens'
+      path: '/itens'
+      fullPath: '/itens'
+      preLoaderRoute: typeof ItensRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estoque': {
+      id: '/estoque'
+      path: '/estoque'
+      fullPath: '/estoque'
+      preLoaderRoute: typeof EstoqueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bom': {
+      id: '/bom'
+      path: '/bom'
+      fullPath: '/bom'
+      preLoaderRoute: typeof BomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +104,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BomRoute: BomRoute,
+  EstoqueRoute: EstoqueRoute,
+  ItensRoute: ItensRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
